@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Geri Sayım</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #141E30, #243B55);
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 20px;
+    }
+
+    .countdown {
+      display: flex;
+      gap: 20px;
+      font-size: 1.5rem;
+      margin-top: 20px;
+    }
+
+    .time-box {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 15px 25px;
+      border-radius: 10px;
+      min-width: 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .time-box span {
+      display: block;
+      font-size: 2rem;
+      font-weight: bold;
+      animation: fadeInUp 0.5s ease;
+    }
+
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>23 Ağustos 2025 - 15:30'a Kalan Süre</h1>
+
+  <div class="countdown" id="countdown">
+    <div class="time-box">
+      <span id="days">0</span>Gün
+    </div>
+    <div class="time-box">
+      <span id="hours">0</span>Saat
+    </div>
+    <div class="time-box">
+      <span id="minutes">0</span>Dakika
+    </div>
+    <div class="time-box">
+      <span id="seconds">0</span>Saniye
+    </div>
+  </div>
+
+  <script>
+    const targetDate = new Date("2025-08-23T15:30:00").getTime();
+
+    function updateElement(id, newValue) {
+      const el = document.getElementById(id);
+      if (el.textContent != newValue) {
+        el.textContent = newValue;
+        el.style.animation = "none";
+        el.offsetHeight; // reflow
+        el.style.animation = null; // tekrar çalıştır
+      }
+    }
+
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = targetDate - now;
+
+      if (distance < 0) {
+        document.getElementById("countdown").innerHTML = "<h2>Süre Doldu!</h2>";
+        clearInterval(timer);
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      updateElement("days", days);
+      updateElement("hours", hours);
+      updateElement("minutes", minutes);
+      updateElement("seconds", seconds);
+    }
+
+    const timer = setInterval(updateCountdown, 1000);
+    updateCountdown();
+  </script>
+</body>
+</html>
