@@ -2,13 +2,13 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Geri Sayım</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+  <title>💍 Nişan Geri Sayım</title>
   <style>
     body {
-      background: linear-gradient(135deg, #141E30, #243B55);
+      background: linear-gradient(135deg, #ffdde1, #ee9ca7);
       color: #fff;
-      font-family: 'Segoe UI', sans-serif;
+      font-family: 'Dancing Script', cursive;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -16,50 +16,75 @@
       height: 100vh;
       margin: 0;
       text-align: center;
+      overflow: hidden;
+      position: relative;
     }
 
     h1 {
-      font-size: 2.2rem;
-      margin-bottom: 20px;
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+      margin-bottom: 10px;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+      z-index: 2;
+    }
+
+    h2 {
+      font-size: clamp(1rem, 4vw, 1.5rem);
+      margin-bottom: 25px;
+      font-weight: normal;
+      z-index: 2;
     }
 
     .countdown {
       display: flex;
-      gap: 20px;
-      font-size: 1.5rem;
-      margin-top: 20px;
+      gap: 10px;
+      font-size: clamp(1rem, 4vw, 1.5rem);
+      flex-wrap: wrap;
+      justify-content: center;
+      z-index: 2;
     }
 
     .time-box {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 15px 25px;
-      border-radius: 10px;
-      min-width: 80px;
-      position: relative;
-      overflow: hidden;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 12px 18px;
+      border-radius: 12px;
+      flex: 1 1 70px;
+      max-width: 100px;
+      backdrop-filter: blur(5px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
     }
 
     .time-box span {
       display: block;
-      font-size: 2rem;
+      font-size: clamp(1.5rem, 6vw, 2.2rem);
       font-weight: bold;
       animation: fadeInUp 0.5s ease;
     }
 
     @keyframes fadeInUp {
-      0% {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      0% { opacity: 0; transform: translateY(15px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Kalp animasyonu */
+    .heart {
+      position: absolute;
+      bottom: -20px;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 20px;
+      animation: floatUp linear forwards;
+      z-index: 1;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(1); opacity: 0.7; }
+      100% { transform: translateY(-110vh) scale(1.5); opacity: 0; }
     }
   </style>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
 </head>
 <body>
-  <h1>NİŞANIMIZA</h1>
+  <h1>💍 Sertan & Hayrunnisa 💍</h1>
+  <h2>23 Ağustos 2025 - 15:30</h2>
 
   <div class="countdown" id="countdown">
     <div class="time-box">
@@ -85,7 +110,7 @@
         el.textContent = newValue;
         el.style.animation = "none";
         el.offsetHeight; // reflow
-        el.style.animation = null; // tekrar çalıştır
+        el.style.animation = null; // tekrar başlat
       }
     }
 
@@ -94,7 +119,7 @@
       const distance = targetDate - now;
 
       if (distance < 0) {
-        document.getElementById("countdown").innerHTML = "<h2>Süre Doldu!</h2>";
+        document.getElementById("countdown").innerHTML = "<h2>💖 Mutlu bir başlangıç! 💖</h2>";
         clearInterval(timer);
         return;
       }
@@ -112,8 +137,23 @@
 
     const timer = setInterval(updateCountdown, 1000);
     updateCountdown();
+
+    // Kalpler oluşturma
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.textContent = "❤️";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.fontSize = Math.random() * 20 + 15 + "px";
+      heart.style.animationDuration = (Math.random() * 4 + 6) + "s";
+      document.body.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 10000);
+    }
+
+    setInterval(createHeart, 500);
   </script>
 </body>
 </html>
-
-
