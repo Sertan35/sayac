@@ -92,6 +92,21 @@
       opacity: 0.8;
       pointer-events: none;
     }
+
+    /* Kalpler */
+    .heart {
+      position: absolute;
+      bottom: -20px;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 20px;
+      animation: floatUp linear forwards;
+      z-index: 1;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(1); opacity: 0.9; }
+      100% { transform: translateY(-110vh) scale(1.5); opacity: 0; }
+    }
   </style>
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
 </head>
@@ -154,7 +169,7 @@
     // 🎆 Havai fişek animasyonu
     function createFirework() {
       const x = Math.random() * window.innerWidth;
-      const y = Math.random() * window.innerHeight / 2; // üst yarıya patlasın
+      const y = Math.random() * window.innerHeight / 2;
 
       for (let i = 0; i < 30; i++) {
         const particle = document.createElement("div");
@@ -174,7 +189,7 @@
           { transform: "translate(0,0)", opacity: 1 },
           { transform: `translate(${dx}px, ${dy}px)`, opacity: 0 }
         ], {
-          duration: 1200 + Math.random() * 800,
+          duration: 1000 + Math.random() * 600,
           easing: "ease-out",
           fill: "forwards"
         });
@@ -184,7 +199,20 @@
       }
     }
 
-    setInterval(createFirework, 1500);
+    setInterval(createFirework, 800); // Daha sık patlama
+
+    // 💖 Kalpler animasyonu
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.textContent = "💖";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.fontSize = Math.random() * 20 + 15 + "px";
+      heart.style.animationDuration = (Math.random() * 4 + 6) + "s";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 10000);
+    }
+    setInterval(createHeart, 800);
   </script>
 </body>
 </html>
