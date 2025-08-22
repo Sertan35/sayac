@@ -79,11 +79,45 @@
       0% { transform: translateY(0) scale(1); opacity: 0.7; }
       100% { transform: translateY(-110vh) scale(1.5); opacity: 0; }
     }
+
+    /* Konfeti parçaları */
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: red;
+      top: -10px;
+      animation: confettiFall linear forwards;
+      z-index: 1;
+    }
+
+    @keyframes confettiFall {
+      0% { transform: translateY(0) rotate(0); opacity: 1; }
+      100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* Final animasyonu */
+    .final {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: clamp(2rem, 8vw, 4rem);
+      color: #fff;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+      animation: pulse 2s infinite;
+      z-index: 10;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); }
+      50% { transform: translate(-50%, -50%) scale(1.1); }
+    }
   </style>
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
 </head>
 <body>
-  <h1>💍 Hayrunnisa & Sertan 💍</h1>
+  <h1>💍 Sertan & Hayrunnisa 💍</h1>
   <h2>23 Ağustos 2025 - 15:30</h2>
 
   <div class="countdown" id="countdown">
@@ -103,14 +137,15 @@
 
   <script>
     const targetDate = new Date("2025-08-23T15:30:00").getTime();
+    let isFinal24h = false;
 
     function updateElement(id, newValue) {
       const el = document.getElementById(id);
       if (el.textContent != newValue) {
         el.textContent = newValue;
         el.style.animation = "none";
-        el.offsetHeight; // reflow
-        el.style.animation = null; // tekrar başlat
+        el.offsetHeight; 
+        el.style.animation = null;
       }
     }
 
@@ -119,7 +154,7 @@
       const distance = targetDate - now;
 
       if (distance < 0) {
-        document.getElementById("countdown").innerHTML = "<h2>💖 Mutlu bir başlangıç! 💖</h2>";
+        document.body.innerHTML = "<div class='final'>💖 Sonsuza Dek Birlikte 💖</div>";
         clearInterval(timer);
         return;
       }
@@ -133,28 +168,41 @@
       updateElement("hours", hours);
       updateElement("minutes", minutes);
       updateElement("seconds", seconds);
+
+      // 24 saatten az kalınca özel animasyon başlasın
+      if (distance < 24 * 60 * 60 * 1000 && !isFinal24h) {
+        isFinal24h = true;
+        setInterval(createConfetti, 200);
+        setInterval(() => createHeart("💖"), 600);
+      }
     }
 
     const timer = setInterval(updateCountdown, 1000);
     updateCountdown();
 
-    // Kalpler oluşturma
-    function createHeart() {
+    // Normal kalpler
+    function createHeart(symbol="❤️") {
       const heart = document.createElement("div");
       heart.classList.add("heart");
-      heart.textContent = "❤️";
+      heart.textContent = symbol;
       heart.style.left = Math.random() * 100 + "vw";
       heart.style.fontSize = Math.random() * 20 + 15 + "px";
       heart.style.animationDuration = (Math.random() * 4 + 6) + "s";
       document.body.appendChild(heart);
-
-      setTimeout(() => {
-        heart.remove();
-      }, 10000);
+      setTimeout(() => heart.remove(), 10000);
     }
+    setInterval(() => createHeart(), 800);
 
-    setInterval(createHeart, 500);
+    // Konfeti
+    function createConfetti() {
+      const confetti = document.createElement("div");
+      confetti.classList.add("confetti");
+      confetti.style.left = Math.random() * 100 + "vw";
+      confetti.style.backgroundColor = ["#ff4b2b","#ff9a9e","#fad0c4","#fcb69f"][Math.floor(Math.random()*4)];
+      confetti.style.animationDuration = (Math.random() * 3 + 3) + "s";
+      document.body.appendChild(confetti);
+      setTimeout(() => confetti.remove(), 7000);
+    }
   </script>
 </body>
 </html>
-
